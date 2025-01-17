@@ -3,21 +3,18 @@ import { handleError } from "../shared/utils.js";
 
 export async function addUser(user) {
   if (!Object.hasOwn(user, "name") || !Object.hasOwn(user, "email")) {
-    throw {
-      message: "invalid object name and email are required",
-      status: 400,
-    };
+    handleError("invalid object name and email are required.");
   }
 
-  const expName = /^[A-Za-z][A-Za-z0-9 ._-]{2,49}$/;
+  const expName = /^[A-Za-z][A-Za-z ._-]{2,49}$/;
   const expEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
 
   if (!expName.test(user.name)) {
-    throw { message: `Invalid name: ${user.name}`, status: 400 };
+    handleError(`Invalid name: ${user.name}.`);
   }
 
   if (!expEmail.test(user.email)) {
-    throw { message: `Invalid email: ${user.email}`, status: 400 };
+    handleError(`Invalid email: ${user.email}.`);
   }
 
   try {
@@ -30,14 +27,14 @@ export async function addUser(user) {
 
 export async function searchUser(id) {
   if (!/^\d+$/.test(id)) {
-    throw { message: `Invalid id: ${id}`, status: 400 };
+    handleError(
+      `The provided user ID (${id}) is not valid. IDs must be numeric.`
+    );
   }
 
   try {
     const res = await new UsersModel().searchUser(id);
-    if (!res) {
-      throw { message: `User not found ${id}`, status: 404 };
-    }
+    if (res.error) handleError(res.error);
 
     return res;
   } catch (error) {

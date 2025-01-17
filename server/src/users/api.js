@@ -9,7 +9,7 @@ users.post("/users", async (req, res) => {
     res.json(user);
   } catch (err) {
     const status = err.status || 500;
-    res.status(status).json(err.message);
+    res.status(status).json(err);
   }
 });
 
@@ -19,7 +19,7 @@ users.get("/user/:id", async (req, res) => {
     res.json(user);
   } catch (err) {
     const status = err.status || 500;
-    res.status(status).json(err.message);
+    res.status(status).json(err);
   }
 });
 

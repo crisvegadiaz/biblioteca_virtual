@@ -9,7 +9,7 @@ books.get("/books", async (_, res) => {
     res.json(books);
   } catch (err) {
     const status = err.status || 500;
-    res.status(status).json({ error: err.message });
+    res.status(status).json(err);
   }
 });
 
@@ -19,17 +19,17 @@ books.post("/books", async (req, res) => {
     res.json(book);
   } catch (err) {
     const status = err.status || 500;
-    res.status(status).json({ error: err.message });
+    res.status(status).json(err);
   }
 });
 
-books.get("/books/:id", async (req, res) => {
+books.get("/book/:id", async (req, res) => {
   try {
     const book = await searchBook(req.params.id);
     res.json(book);
   } catch (err) {
     const status = err.status || 500;
-    res.status(status).json({ error: err.message });
+    res.status(status).json(err);
   }
 });
 

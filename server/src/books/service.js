@@ -12,14 +12,14 @@ export async function listBooks() {
 
 export async function searchBook(id) {
   if (!/^\d+$/.test(id)) {
-    throw { message: `Invalid id: ${id}`, status: 400 };
-  }  
+    handleError(
+      `The provided book ID (${id}) is not valid. IDs must be numeric.`
+    );
+  }
 
   try {
     const res = await new BooksModel().searchBook(id);
-    if (!res) {
-      throw { message: `Book not found ${id}`, status: 404 };
-    }
+    if (res.error) handleError(res.error);
 
     return res;
   } catch (error) {
@@ -29,17 +29,14 @@ export async function searchBook(id) {
 
 export async function addBook(book) {
   if (!Object.hasOwn(book, "title") || !Object.hasOwn(book, "author")) {
-    throw {
-      message: "invalid object title and author are required",
-      status: 400,
-    };
+    handleError("Invalid object title and author are required.");
   }
 
-  if (Object.hasOwn(book, "yearOfPublication")) {
+  if (Object.hasOwn(book, "year_of_publication")) {
     const expDate = /^\d{4}-\d{2}-\d{2}$/;
 
-    if (expDate.test(book.yearOfPublication)) {
-      throw { message: "invalid date format yyyy-mm-dd", status: 400 };
+    if (!expDate.test(book.year_of_publication)) {
+      handleError("Invalid date format yyyy-mm-dd.");
     }
   }
 

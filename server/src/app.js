@@ -3,6 +3,7 @@ import express from "express";
 import users from "./users/api.js";
 import books from "./books/api.js";
 import loans from "./loans/api.js";
+import errorRouter from "./error/api.js";
 
 dotenv.config();
 
@@ -21,6 +22,9 @@ app.use(express.json());
 app.use(users);
 app.use(books);
 app.use(loans);
+
+// Routes Default
+app.use(errorRouter)
 
 app.listen(port, (err) => {
   if (err) {

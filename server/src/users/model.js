@@ -10,7 +10,7 @@ export default class UsersModel {
         name,
         email,
       ]);
-      return { ok: "added user" };
+      return { success: true, ok: "added user" };
     } catch (error) {
       handleError(error);
     }
@@ -20,7 +20,7 @@ export default class UsersModel {
     try {
       const [dato] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
       if (dato === undefined) {
-        return null;
+        return { error: "User already returned." };
       }
 
       const book = await pool.query(
@@ -28,8 +28,8 @@ export default class UsersModel {
         SELECT 
           b.title, 
           b.author, 
-          l.loan_date, 
-          l.return_date
+          DATE_FORMAT(l.loan_date, '%Y-%m-%d') AS loan_date, 
+          DATE_FORMAT(l.return_date, '%Y-%m-%d') AS return_date
         FROM 
           loans l
         JOIN 
@@ -43,6 +43,7 @@ export default class UsersModel {
       );
 
       const res = {
+        success: true,
         user: dato,
         books: book,
       };

@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mariadb
+    container_name: biblioteca_virtual
+    environment:
+      MARIADB_ROOT_PASSWORD: 12345
+      MARIADB_USER: cristian
+      MARIADB_PASSWORD: 12345
+      MARIADB_DATABASE: prueba_db
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mariadb-data:/var/lib/mysql:Z
