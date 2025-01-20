@@ -9,7 +9,8 @@ export default class BooksModel {
           id, 
           title, 
           author, 
-          DATE_FORMAT(year_of_publication, '%Y-%m-%d') AS year_of_publication 
+          DATE_FORMAT(year_of_publication, '%Y-%m-%d') AS year_of_publication,
+          available
         FROM books`
       );
 
@@ -46,7 +47,7 @@ export default class BooksModel {
           author, 
           IFNULL(DATE_FORMAT(year_of_publication, '%Y-%m-%d'), NULL) 
           AS year_of_publication,
-          available,
+          available
         FROM books 
         WHERE id = ?`,
         [id]

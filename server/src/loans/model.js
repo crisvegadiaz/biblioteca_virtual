@@ -3,20 +3,20 @@ import { handleError } from "../shared/utils.js";
 
 export default class LoansModel {
   async bookLoan(datos) {
-    let { idBook, idUser, loanDate } = datos;
+    let { id_book, id_user, loanDate } = datos;
 
     try {
-      const userExists = await this.#getUserExistence(idUser);
+      const userExists = await this.#getUserExistence(id_user);
       if (userExists === 0) {
         return { error: "User not exists" };
       }
 
-      const bookExists = await this.#getBookExists(idBook);
+      const bookExists = await this.#getBookExists(id_book);
       if (bookExists === 0) {
         return { error: "Book not exists" };
       }
 
-      const bookAvailable = await this.#getBookAvailable(idBook);
+      const bookAvailable = await this.#getBookAvailable(id_book);
       if (bookAvailable === 0) {
         return { error: "Book not available" };
       }
@@ -24,7 +24,7 @@ export default class LoansModel {
       await pool.query(
         `INSERT INTO loans (book_id, user_id, loan_date) 
         VALUES (?, ?, ?)`,
-        [idBook, idUser, loanDate]
+        [id_book, id_user, loanDate]
       );
       return { success: true, message: "Loan created" };
     } catch (error) {
@@ -81,7 +81,7 @@ export default class LoansModel {
       );
 
       if (res.length === 0) {
-        return { message: "No loans found" };
+        return { success: true, message: "No loans found" };
       }
 
       return { success: true, books: res };
@@ -90,26 +90,26 @@ export default class LoansModel {
     }
   }
 
-  async #getBookAvailable(idBook) {
+  async #getBookAvailable(id_book) {
     const [book] = await pool.query(
       `SELECT available FROM books WHERE id = ?`,
-      [idBook]
+      [id_book]
     );
     return book.available;
   }
 
-  async #getUserExistence(idUser) {
+  async #getUserExistence(id_user) {
     const [user] = await pool.query(
       `SELECT EXISTS(SELECT 1 FROM users WHERE id = ?) AS existe;`,
-      [idUser]
+      [id_user]
     );
     return user.existe;
   }
 
-  async #getBookExists(idBook) {
+  async #getBookExists(id_book) {
     const [book] = await pool.query(
       `SELECT EXISTS(SELECT 1 FROM books WHERE id = ?) AS existe;`,
-      [idBook]
+      [id_book]
     );
     return book.existe;
   }

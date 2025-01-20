@@ -2,19 +2,19 @@ import LoansModel from "./model.js";
 import { handleError, formatDate } from "../shared/utils.js";
 
 export async function bookLoan(datos) {
-  if (!datos.idUser || !datos.idBook) {
-    handleError(`Invalid loan data must have an idUser and an idBook`);
+  if (!datos.id_user || !datos.id_book) {
+    handleError(`Invalid loan data must have an id_user and an id_book`);
   }
 
-  if (!/^\d+$/.test(datos.idUser)) {
+  if (!/^\d+$/.test(datos.id_user)) {
     handleError(
-      `The provided user ID (${datos.idUser}) is not valid. IDs must be numeric.`
+      `The provided user ID (${datos.id_user}) is not valid. IDs must be numeric.`
     );
   }
 
-  if (!/^\d+$/.test(datos.idBook)) {
+  if (!/^\d+$/.test(datos.id_book)) {
     handleError(
-      `The provided book ID (${datos.idBook}) is not valid. IDs must be numeric.`
+      `The provided book ID (${datos.id_book}) is not valid. IDs must be numeric.`
     );
   }
 

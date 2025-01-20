@@ -1,3 +1,31 @@
+USE prueba_db;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL,
+    email VARCHAR(40) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE books (
+    id INT AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    author VARCHAR(50) NOT NULL,
+    year_of_publication DATE DEFAULT NULL,
+    available TINYINT(1) NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE loans (
+    book_id INT,
+    user_id INT,
+    loan_date DATE,
+    return_date DATE DEFAULT NULL,
+    FOREIGN KEY (book_id) REFERENCES books(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
 -- Insertar datos en la tabla users
 INSERT INTO users (name, email) VALUES
 ('Juan Pérez', 'juan.perez@example.com'),
@@ -19,5 +47,4 @@ INSERT INTO loans (book_id, user_id, loan_date, return_date) VALUES
 (2, 2, '2024-12-03', '2024-12-17'),
 (3, 4, '2024-12-05', NULL), -- NULL indica que el libro aún no ha sido devuelto
 (4, 1, '2024-11-20', '2024-12-01');
-
 
